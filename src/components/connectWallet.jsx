@@ -3,12 +3,29 @@ import { ethers } from "ethers";
 
 const ConnectWallet = () => {
   const [walletAddress, setWalletAddress] = useState(null);
+  const [isCorrectNetwork, setIsCorrectNetwork] = useState(false);
+
+  const EXPECTED_NETWORK_ID = '31337'; // Hardhat's default network ID
+
+  const checkNetwork = async (provider) => {
+    const network = await provider.getNetwork();
+    const isCorrect = network.chainId.toString() === EXPECTED_NETWORK_ID;
+    setIsCorrectNetwork(isCorrect);
+    return isCorrect;
+  };
 
   const handleConnect = async () => {
     if (window.ethereum) {
       try {
         const provider = new ethers.BrowserProvider(window.ethereum);
         await provider.send("eth_requestAccounts", []);
+        
+        const isCorrect = await checkNetwork(provider);
+        if (!isCorrect) {
+          alert("Please connect to the Hardhat localhost network.");
+          return;
+        }
+
         const signer = await provider.getSigner();
         const address = await signer.getAddress();
         setWalletAddress(address);
@@ -18,7 +35,6 @@ const ConnectWallet = () => {
     } else {
       alert("MetaMask is not installed. Please install it to use this feature.");
     }
-
   };
 
   const changeWallet = async () => {
@@ -34,6 +50,13 @@ const ConnectWallet = () => {
 
   useEffect(() => {
     if (window.ethereum) {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      checkNetwork(provider);
+
+      window.ethereum.on('chainChanged', () => {
+        checkNetwork(provider);
+      });
+
       window.ethereum.on('accountsChanged', (accounts) => {
         if (accounts.length > 0) {
           setWalletAddress(accounts[0]);
@@ -43,6 +66,7 @@ const ConnectWallet = () => {
       });
 
       return () => {
+        window.ethereum.removeListener('chainChanged', () => {});
         window.ethereum.removeListener('accountsChanged', () => {});
       };
     }
@@ -52,8 +76,11 @@ const ConnectWallet = () => {
     <div className='flex items-center'>
       {walletAddress ? (
         <>
-          
-          <button onClick={changeWallet}><p>Connected: {walletAddress.slice(0, 5)}...{walletAddress.slice(-5)}</p></button>
+          {isCorrectNetwork ? (
+            <button onClick={changeWallet}><p>Connected: {walletAddress.slice(0, 5)}...{walletAddress.slice(-5)}</p></button>
+          ) : (
+            <button onClick={handleConnect}>Switch to Hardhat Network</button>
+          )}
         </>
       ) : (
         <button onClick={handleConnect}>Connect Wallet</button>
