@@ -1,18 +1,19 @@
 import PropTypes from 'prop-types';
 
-const ButtonPrimary = ({text, clasName, onClick}) => {
+const ButtonPrimary = ({text, className, onClick}) => {
   return (
-    <div>
-        <button className={`btn btn-primary rounded-md px-12 py-3 bg-primary ${clasName}`} onClick={onClick}>
-            {text}
-        </button>
-    </div>
+    <button 
+      className={`px-4 py-2 font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 ${className}`} 
+      onClick={onClick}
+    >
+      {text}
+    </button>
   )
 }
 
 ButtonPrimary.propTypes = {
   text: PropTypes.string.isRequired,
-  clasName: PropTypes.string,
+  className: PropTypes.string,
   onClick: PropTypes.func,
 };
 

@@ -7,9 +7,9 @@ import AddProperty from './components/Property/addProperty';
 import AssetManager from '../contract/AssetManager.json';
 import UpdateCustomer from './components/Customer/updateCustomer';
 import DeleteCustomer from './components/Customer/deleteCustomer';
-
+import CustomerList from './components/Customer/customerList';
 function App() {
-  const contractAddress = 'YOUR_CONTRACT_ADDRESS_HERE'; // Replace with your actual contract address
+  const contractAddress = '0xe7f1725e7734ce288f8367e1bb143e90bb3f0512'; // Replace with your actual contract address
   const contractABI = AssetManager.abi;
 
   return (
@@ -33,6 +33,10 @@ function App() {
           <Route 
             path="/delete-customer" 
             element={<DeleteCustomer contractAddress={contractAddress} contractABI={contractABI} />}
+          />
+          <Route 
+            path="/customer-list" 
+            element={<CustomerList contractAddress={contractAddress} contractABI={contractABI} />}
           />
         </Routes>
       </div>
