@@ -1,35 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import './App.css';
+import AddCustomer from './components/Customer/addCustomer';
+import Navbar from './components/Navbar';
+import Home from './pages/Home';
+import AddProperty from './components/Property/addProperty';
+import AssetManager from '../contract/AssetManager.json';
+import UpdateCustomer from './components/Customer/updateCustomer';
+import DeleteCustomer from './components/Customer/deleteCustomer';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const contractAddress = 'YOUR_CONTRACT_ADDRESS_HERE'; // Replace with your actual contract address
+  const contractABI = AssetManager.abi;
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <Router>
+      <div className="App">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route 
+            path="/add-customer" 
+            element={<AddCustomer contractAddress={contractAddress} contractABI={contractABI} />}
+          />
+          <Route 
+            path="/add-property" 
+            element={<AddProperty contractAddress={contractAddress} contractABI={contractABI} />}
+          />
+          <Route 
+            path="/edit-customer" 
+            element={<UpdateCustomer contractAddress={contractAddress} contractABI={contractABI} />}
+          />
+          <Route 
+            path="/delete-customer" 
+            element={<DeleteCustomer contractAddress={contractAddress} contractABI={contractABI} />}
+          />
+        </Routes>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </Router>
+  );
 }
 
-export default App
+export default App;

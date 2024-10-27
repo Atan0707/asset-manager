@@ -50,13 +50,18 @@ contract AssetManager {
         _;
     }
 
-    function isAdmin(address _addr) internal view returns (bool) {
+    function isAdmin(address _addr) public view returns (bool) {
         for (uint256 i = 0; i < admin.length; i++) {
             if (admin[i] == _addr) {
                 return true;
             }
         }
         return false;
+    }
+
+    modifier customerExists(uint256 customerId) {
+        require(customerId > 0 && customerId < customerIdCounter, "Customer does not exist.");
+        _;
     }
 
     // Function to add an admin, only callable by the owner
@@ -104,4 +109,82 @@ contract AssetManager {
         Inheritor memory newInheritor = Inheritor(name, ic, contactNo, Address);
         customerInheritors[customerId].push(newInheritor);
     }
+
+    // Function to update customer data by customerId, restricted to admin or owner
+    function updateCustomerData(
+        uint256 customerId,
+        string memory name,
+        string memory ic,
+        string memory contactNo,
+        string memory Address
+    ) public onlyAdminOrOwner customerExists(customerId) {
+        customers[customerId].name = name;
+        customers[customerId].ic = ic;
+        customers[customerId].contactNo = contactNo;
+        customers[customerId].Address = Address;
+    }
+
+    // Function to update properties for a customer by customerId, restricted to admin or owner
+    function updateCustomerProperty(
+        uint256 customerId,
+        uint256 propertyIndex,
+        string memory title,
+        string memory details,
+        string memory gambar
+    ) public onlyAdminOrOwner customerExists(customerId) {
+        customerProperties[customerId][propertyIndex].title = title;
+        customerProperties[customerId][propertyIndex].details = details;
+        customerProperties[customerId][propertyIndex].gambar = gambar;
+    }
+
+    // Function to update inheritors for a customer by customerId, restricted to admin or owner
+    function updateCustomerInheritor(
+        uint256 customerId,
+        uint256 inheritorIndex,
+        string memory name,
+        string memory ic,
+        string memory contactNo,
+        string memory Address
+    ) public onlyAdminOrOwner customerExists(customerId) {
+        customerInheritors[customerId][inheritorIndex].name = name;
+        customerInheritors[customerId][inheritorIndex].ic = ic;
+        customerInheritors[customerId][inheritorIndex].contactNo = contactNo;
+        customerInheritors[customerId][inheritorIndex].Address = Address;
+    }
+
+    // Function to delete customer data by customerId, restricted to admin or owner
+    function deleteCustomerData(uint256 customerId) public onlyAdminOrOwner customerExists(customerId) {
+        delete customers[customerId];
+    }
+
+    // Function to delete properties for a customer by customerId, restricted to admin or owner
+    function deleteCustomerProperty(uint256 customerId, uint256 propertyIndex) public onlyAdminOrOwner customerExists(customerId) {
+        delete customerProperties[customerId][propertyIndex];
+    }
+
+    // Function to delete inheritors for a customer by customerId, restricted to admin or owner
+    function deleteCustomerInheritor(uint256 customerId, uint256 inheritorIndex) public onlyAdminOrOwner customerExists(customerId) {
+        delete customerInheritors[customerId][inheritorIndex];
+    }
+
+    // Function to get customer data by customerId
+    function getCustomerData(uint256 customerId) public view customerExists(customerId) returns (CustomerData memory) {
+        return customers[customerId];
+    }
+
+    // Function to get properties for a customer by customerId
+    function getCustomerProperties(uint256 customerId) public view customerExists(customerId) returns (Properties[] memory) {
+        return customerProperties[customerId];
+    }
+
+    // Function to get inheritors for a customer by customerId
+    function getCustomerInheritors(uint256 customerId) public view customerExists(customerId) returns (Inheritor[] memory) {
+        return customerInheritors[customerId];
+    }
+
+    // Function to get all customers
+    function getAllCustomers() public view returns (CustomerData[] memory) {
+        return customers;
+    }
+
 }
