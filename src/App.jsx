@@ -8,8 +8,10 @@ import AssetManager from '../contract/AssetManager.json';
 import UpdateCustomer from './components/Customer/updateCustomer';
 import DeleteCustomer from './components/Customer/deleteCustomer';
 import CustomerList from './components/Customer/customerList';
+import ViewProperty from './components/Property/viewProperty';
+
 function App() {
-  const contractAddress = '0xa513e6e4b8f2a923d98304ec87f64353c4d5c853'; // Replace with your actual contract address
+  const contractAddress = '0x0dcd1bf9a1b36ce34237eeafef220932846bcd82'; // Replace with your actual contract address
   const contractABI = AssetManager.abi;
 
   return (
@@ -27,11 +29,15 @@ function App() {
             element={<AddProperty contractAddress={contractAddress} />}
           />
           <Route 
-            path="/edit-customer" 
+            path="/edit-customer/:customerId" 
             element={<UpdateCustomer contractAddress={contractAddress} contractABI={contractABI} />}
           />
           <Route 
-            path="/delete-customer" 
+            path="/view-property/:customerId" 
+            element={<ViewProperty contractAddress={contractAddress} />}
+          />
+          <Route 
+            path="/delete-customer/:customerId" 
             element={<DeleteCustomer contractAddress={contractAddress} contractABI={contractABI} />}
           />
           <Route 

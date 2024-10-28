@@ -7,6 +7,7 @@ import Input from '../common/Input';
 
 const AddProperty = ({ contractAddress }) => {
     const { customerId } = useParams();
+    console.log("Received customerId:", customerId);
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [details, setDetails] = useState('');
@@ -17,8 +18,10 @@ const AddProperty = ({ contractAddress }) => {
 
     useEffect(() => {
         const fetchCustomerName = async () => {
+            console.log("Fetching customer data for ID:", customerId);
             try {
                 const customer = await handleContractSubmit('customers', customerId);
+                console.log("Received customer data:", customer);
                 setCustomerName(customer.name);
             } catch (error) {
                 console.error('Error fetching customer name:', error);
@@ -46,7 +49,7 @@ const AddProperty = ({ contractAddress }) => {
 
     return (
         <div className="max-w-md mx-auto mt-10">
-            <h1 className="text-2xl font-bold mb-5">Add Property for Customer: {customerName || customerId}</h1>
+            <h1 className="text-2xl font-bold mb-5">Add Property for Customer: {customerName}</h1>
             <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
                 <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
                 <Input value={details} onChange={(e) => setDetails(e.target.value)} placeholder="Details" />

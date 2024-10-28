@@ -18,6 +18,7 @@ const AddCustomer = ({ contractAddress }) => {
 
     if (success) {
       alert('Customer added successfully!');
+      console.log('')
     } else {
       alert('Failed to add customer. Please try again.');
     }

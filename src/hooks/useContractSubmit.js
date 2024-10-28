@@ -9,14 +9,32 @@ export const useContractSubmit = (contractAddress) => {
     }
 
     try {
+      console.log(`Calling contract method: ${method} with args:`, args);
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
       const contract = new ethers.Contract(contractAddress, AssetManagerABI.abi, signer);
 
-      const tx = await contract[method](...args);
-      await tx.wait();
+      if (method === 'customers') {
+        // This is a read operation
+        const result = await contract[method](args[0]);
+        console.log('Read operation result:', result);
+        return result;
+      }else if (method === 'getCustomerProperties'){
+         {
+            const result = await contract[method](args[0]);
+            console.log('Read operation result:', result);
+            return result;
+          }
+      } 
+      else {
+        // This is a write operation
+        const tx = await contract[method](...args);
+        await tx.wait();
+        console.log('Write operation successful');
+        return true;
+      }
 
-      return true;
+
     } catch (error) {
       console.error(`Error in contract submission:`, error);
       return false;
