@@ -14,6 +14,7 @@ const ConnectWallet = () => {
     return isCorrect;
   };
 
+  // force to connect to network
   const handleConnect = async () => {
     if (window.ethereum) {
       try {
@@ -22,8 +23,26 @@ const ConnectWallet = () => {
         
         const isCorrect = await checkNetwork(provider);
         if (!isCorrect) {
-          alert("Please connect to the Hardhat localhost network.");
-          return;
+          await window.ethereum.request({
+            method: "wallet_addEthereumChain",
+            params: [{
+              chainId: "0x7A69", // 31337 in hexadecimal
+              rpcUrls: ["http://127.0.0.1:8545/"],
+              chainName: "Hardhat Localhost",
+              nativeCurrency: {
+                name: "ETH",
+                symbol: "ETH",
+                decimals: 18
+              },
+              blockExplorerUrls: null
+            }]
+          });
+          
+          const isCorrectAfterSwitch = await checkNetwork(provider);
+          if (!isCorrectAfterSwitch) {
+            alert("Please connect to the Hardhat localhost network.");
+            return;
+          }
         }
 
         const signer = await provider.getSigner();

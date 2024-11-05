@@ -11,7 +11,7 @@ import CustomerList from './components/Customer/customerList';
 import ViewProperty from './components/Property/viewProperty';
 
 function App() {
-  const contractAddress = '0x0dcd1bf9a1b36ce34237eeafef220932846bcd82'; // Replace with your actual contract address
+  const contractAddress = '0x5fbdb2315678afecb367f032d93f642f64180aa3'; // Replace with your actual contract address
   const contractABI = AssetManager.abi;
 
   return (

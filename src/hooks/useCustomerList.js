@@ -10,7 +10,7 @@ export const useCustomerList = (contractAddress) => {
   useEffect(() => {
     const fetchCustomers = async () => {
       if (!window.ethereum) {
-        setError('Please install MetaMask to use this feature.');
+        setError('Please install MetaMask.');
         setLoading(false);
         return;
       }
