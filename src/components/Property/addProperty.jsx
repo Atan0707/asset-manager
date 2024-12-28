@@ -56,6 +56,11 @@ const AddProperty = ({ contractAddress }) => {
                 <Input value={gambar} onChange={(e) => setGambar(e.target.value)} placeholder="Gambar" />
                 <ButtonPrimary text="Add Property" onClick={handleSubmit} />
             </form>
+            <ButtonPrimary 
+                text="Back to Customer List" 
+                onClick={() => navigate('/customer-list')} 
+                className="mt-4"
+            />
         </div>
     )
 }

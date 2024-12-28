@@ -33,7 +33,19 @@ const CustomerActions = ({ customerId }) => {
       onClick: () => navigate(`/delete-customer/${customerId}`),
       // className: 'bg-red-500 hover:bg-red-600 text-white',
       component: ButtonSecondary,
-    }
+    },
+    {
+      text: 'Add Inheritor',
+      onClick: () => navigate(`/add-inheritor/${customerId}`),
+      // className: 'bg-red-500 hover:bg-red-600 text-white',
+      component: ButtonSecondary,
+    },
+    {
+      text: 'View Inheritor',
+      onClick: () => navigate(`/view-inheritor/${customerId}`),
+      // className: 'bg-red-500 hover:bg-red-600 text-white',
+      component: ButtonSecondary,
+    },
     
     // Add more actions here
   ];

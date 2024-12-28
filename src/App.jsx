@@ -9,6 +9,9 @@ import UpdateCustomer from './components/Customer/updateCustomer';
 import DeleteCustomer from './components/Customer/deleteCustomer';
 import CustomerList from './components/Customer/customerList';
 import ViewProperty from './components/Property/viewProperty';
+import AddInheritor from './components/Inheritor/AddInheritor';
+import ViewInheritor from './components/Inheritor/ViewInheritor';
+import CustomerPage from './pages/Customer'
 
 function App() {
   const contractAddress = '0x5fbdb2315678afecb367f032d93f642f64180aa3'; // Replace with your actual contract address
@@ -44,6 +47,19 @@ function App() {
             path="/customer-list" 
             element={<CustomerList contractAddress={contractAddress} contractABI={contractABI} />}
           />
+          <Route
+          path="/add-inheritor/:customerId"
+          element={<AddInheritor contractAddress={contractAddress} />}
+          />
+          <Route 
+            path="/view-inheritor/:customerId" 
+            element={<ViewInheritor contractAddress={contractAddress} />} // Add the new route
+          />
+          <Route 
+            path="/customer-page" 
+            element={<CustomerPage contractAddress={contractAddress} />} // Add the new route
+          />
+          <Route path="*" element={<div>Not Found</div>} />
         </Routes>
       </div>
     </Router>
